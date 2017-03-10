@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Chatbar from "./Chatbar.jsx";
 import MessageList from "./MessageList.jsx";
 
-
 export default class App extends Component {
   constructor(props){
     super(props)
@@ -22,34 +21,15 @@ export default class App extends Component {
     this.socket.onmessage = (event) => {
       this.receiveMessages(JSON.parse(event.data))
       // console.log(event);
-      console.log(JSON.parse(event.data))
-      switch(data.type) {
-        case "incomingMessage":
-        return (
-          <div className="message system">
-              <span className="message-content">{this.props.content}</span>
-          </div>
-        );
-          break;
-        case "incomingNotification":
-        return (
-          <div className="message">
-              <span className="message-username">{this.props.currentUser.name}</span>
-              <span className="message-content">{this.props.content}</span>
-          </div>
-        );
+      const data = JSON.parse(event.data)
+      console.log(data)
 
-          break;
-        default:
-          // show an error in the console if the message type is unknown
-          console.log("Unknown event type ", message.type);
-      }
     }
   }
 
   addMessages = (content, username) => {
     const message = {
-      type:"incomingMessage",
+      type:"postMessage",
       username,
       content,
     };
@@ -75,22 +55,23 @@ export default class App extends Component {
   };
 
   changeUsername = (event) => {
-    this.setState({
-      user: {
-        ...this.state.currentUser,
-        name: event.target.value
-      }
-    }, () => {
-      if (event.key === 'Enter') {
-        this.addMessages(this.state.message, this.state.currentUser.name);
-      }
-    })
+    if (event.key === 'Enter') {
+      // this.addMessages(this.state.message, this.state.currentUser.name);
+
+      this.setState({
+        currentUser: {
+          ...this.state.currentUser,
+          name: event.target.value
+        }
+      })
+
     let newNotification = {
       type: 'postNotification',
-      content: `${this.state.currentUser.name} changed their name to ${e.target.value}.`
-    };
+      content: `${this.state.currentUser.name} changed their name to ${event.target.value}.`
+    }
+    this.socket.send(JSON.stringify(newNotification))
   }
-    // this.setState({ user: {
+}    // this.setState({ user: {
     //   ...this.state.currentUser,
     //   name: event.target.value,
 

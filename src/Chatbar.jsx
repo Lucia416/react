@@ -8,14 +8,14 @@ class Chatbar extends Component {
       <footer className="chatbar">
         <input
           className="chatbar-username"
-          value={username}
-          onChange={changeUsername}
+          defaultValue={username}
+          onKeyUp={changeUsername}
           placeholder="Your Name (Optional)"
         />
         <input
           value={message}
           onChange={changeMessage}
-          onKeyDown={publishMsg}
+          onKeyUp={publishMsg}
           className="chatbar-message"
           placeholder="Type a message and hit ENTER"
         />
