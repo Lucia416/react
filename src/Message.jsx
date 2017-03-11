@@ -18,11 +18,9 @@ class Message extends Component {
             <span className="message-content">{this.props.content}</span>
         </div>
       );
-
         break;
       default:
-        // show an error in the console if the message type is unknown
-        console.log("Unknown event type ", message.type);
+        return <div>error</div>
     }
   // return (
   //     <li>

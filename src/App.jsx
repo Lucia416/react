@@ -22,6 +22,9 @@ export default class App extends Component {
       this.receiveMessages(JSON.parse(event.data))
       // console.log(event);
       const data = JSON.parse(event.data)
+      if (data.type == "updateUserCount") {
+        this.setState({userCount: data.userCount});
+      }
       console.log(data)
 
     }
@@ -79,10 +82,12 @@ export default class App extends Component {
 
 
   render() {
+    console.log('shutest', this.state);
     return (
       <div>
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
+        <div id="onlineuser" >{this.state.userCount} users online</div>
       </nav>
       <Chatbar
         message={this.state.message}
